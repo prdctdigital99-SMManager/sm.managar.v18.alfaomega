@@ -1,0 +1,22 @@
+{
+  "name": "sm-manager-v18-alfaomega",
+  "version": "18.1.0",
+  "description": "SMManager – Aplikasi manajemen Sekolah Minggu berbasis digital",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static site - no build needed'",
+    "lint": "echo 'No linter configured'"
+  },
+  "keywords": [
+    "sekolah minggu",
+    "manajemen gereja",
+    "absensi anak",
+    "SMManager"
+  ],
+  "author": "Eli Dwi Angga, S.TP",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/speed-insights": "latest"
+  }
+}
