@@ -1,0 +1,30 @@
+{
+  "name": "sm-managar-v18-alfaomega",
+  "version": "18.1.0",
+  "description": "SMManager – Aplikasi manajemen Sekolah Minggu berbasis digital",
+  "main": "index.html",
+  "scripts": {
+    "build": "mkdir -p dist && cp -r node_modules/@vercel/speed-insights/dist dist/speed-insights",
+    "dev": "npm run build && python3 -m http.server 8000",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prdctdigital99-SMManager/sm.managar.v18.alfaomega.git"
+  },
+  "keywords": [
+    "sekolah-minggu",
+    "church-management",
+    "sunday-school",
+    "attendance"
+  ],
+  "author": "Eli Dwi Angga, S.TP",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/prdctdigital99-SMManager/sm.managar.v18.alfaomega/issues"
+  },
+  "homepage": "https://github.com/prdctdigital99-SMManager/sm.managar.v18.alfaomega#readme",
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
+  }
+}

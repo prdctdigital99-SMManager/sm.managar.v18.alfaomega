@@ -511,6 +511,12 @@ el.src = _LOGO_SRC;
 });
 });
 </script>
+<!-- ===== VERCEL SPEED INSIGHTS ===== -->
+<script type="module">
+  import { injectSpeedInsights } from './dist/speed-insights/index.mjs';
+  injectSpeedInsights();
+</script>
+<!-- ===== END VERCEL SPEED INSIGHTS ===== -->
 </head>
 <body>
 <div class="settings-overlay" id="settingsOverlay" onclick="closeSettings()"></div>
