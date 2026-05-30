@@ -555,8 +555,30 @@ el.src = _LOGO_SRC;
 <div class="color-swatch-grid" id="colorSwatchGrid"></div>
 </div>
 <div class="settings-section">
+<div class="settings-section-label">🌓 Mode Tampilan</div>
+<div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid var(--border-subtle);border-radius:10px;padding:12px 14px;">
+<div>
+<div style="font-size:0.82rem;font-weight:700;color:var(--cream);" id="themeModeLabel">Mode Gelap</div>
+<div style="font-size:0.69rem;color:var(--muted);margin-top:2px;">Pilih tampilan terang atau gelap</div>
+</div>
+<button id="themeModeToggleBtn" onclick="toggleThemeMode()" style="width:52px;height:28px;border-radius:14px;border:none;cursor:pointer;position:relative;transition:background 0.3s;background:rgba(201,168,76,0.3);flex-shrink:0;" title="Ganti mode tampilan">
+<span id="themeModeThumb" style="position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#C9A84C;transition:transform 0.3s;display:flex;align-items:center;justify-content:center;font-size:0.75rem;">🌙</span>
+</button>
+</div>
+</div>
+<div class="settings-section">
 <div class="settings-section-label">👤 Akun Admin</div>
 <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border-subtle);border-radius:10px;padding:14px;margin-bottom:12px;">
+<div style="font-size:0.75rem;font-weight:700;color:var(--muted-light);margin-bottom:10px;letter-spacing:0.3px;">📧 Email Admin (untuk Reset Password)</div>
+<div class="settings-field">
+<label>Email Admin</label>
+<input type="email" id="cfgAdminEmail" placeholder="admin@email.com" autocomplete="email">
+</div>
+<button class="btn btn-outline btn-sm" style="width:100%;margin-top:4px;" onclick="simpanEmailAdmin()">
+💾 Simpan Email Admin
+</button>
+<div id="msgEmailAdmin" style="display:none;margin-top:8px;font-size:0.75rem;padding:7px 10px;border-radius:7px;"></div>
+</div>
 <div style="font-size:0.75rem;font-weight:700;color:var(--muted-light);margin-bottom:10px;letter-spacing:0.3px;">Ganti Username Admin</div>
 <div class="settings-field">
 <label>Username Saat Ini</label>
@@ -745,6 +767,26 @@ Pilih nama Anda untuk masuk<br>sebagai Pelayan Sekolah Minggu
 <div class="login-spinner"></div>
 </button>
 <div class="login-error-new" id="errorAdmin">Username atau password salah!</div>
+<div style="text-align:center;margin-top:12px;">
+<button type="button" onclick="openForgotPassword()" style="background:none;border:none;color:rgba(201,168,76,0.75);font-size:0.73rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;text-decoration:underline;letter-spacing:0.02em;padding:4px 0;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(201,168,76,0.75)'">🔑 Lupa password?</button>
+</div>
+</div>
+<!-- Modal Lupa Password -->
+<div id="modalForgotPassword" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:16px;">
+<div style="background:#0f1e3c;border:1px solid rgba(201,168,76,0.35);border-radius:18px;padding:28px;max-width:400px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,0.8);">
+<div style="font-family:'Sora',sans-serif;font-size:1rem;color:#C9A84C;margin-bottom:6px;font-weight:700;">🔑 Reset Password Admin</div>
+<p style="font-size:0.78rem;color:rgba(255,255,255,0.5);margin-bottom:18px;line-height:1.6;">Masukkan email yang terdaftar untuk menerima tautan reset password.</p>
+<div style="margin-bottom:12px;">
+<label style="font-size:0.71rem;color:#C9A84C;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;display:block;margin-bottom:5px;">Email Admin</label>
+<input type="email" id="forgotEmailInput" placeholder="email@gmail.com" autocomplete="email" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:9px;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;padding:10px 12px;outline:none;transition:border 0.2s;" onfocus="this.style.borderColor='#C9A84C'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'" onkeydown="if(event.key==='Enter')kirimResetPassword()">
+</div>
+<div id="forgotMsg" style="display:none;font-size:0.76rem;padding:8px 11px;border-radius:8px;margin-bottom:12px;"></div>
+<div style="display:flex;gap:8px;">
+<button onclick="kirimResetPassword()" style="flex:1;background:linear-gradient(135deg,#C9A84C,#a8872e);color:#0A0F1E;border:none;border-radius:9px;padding:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.18s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">📧 Kirim Link Reset</button>
+<button onclick="closeForgotPassword()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);border-radius:9px;padding:10px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;cursor:pointer;">✕ Batal</button>
+</div>
+<p style="font-size:0.67rem;color:rgba(255,255,255,0.3);margin-top:14px;line-height:1.6;text-align:center;">💡 Email reset akan dikirim via <b style="color:rgba(201,168,76,0.6);">mailto:</b>. Pastikan email admin sudah disimpan di Pengaturan → Akun Admin.</p>
+</div>
 </div>
 <div class="login-card-divider"></div>
 <p style="text-align:center;font-size:0.65rem;color:rgba(255,255,255,0.2);letter-spacing:0.08em;text-transform:uppercase;">Sistem Manajemen Sekolah Minggu</p>
@@ -786,9 +828,10 @@ Pilih nama Anda untuk masuk<br>sebagai Pelayan Sekolah Minggu
 <button onclick="showPage('rekap',this)" data-menu="admin-only">📊 Rekap</button>
 <button onclick="showPage('persentase',this)" data-menu="admin-only">🏆 Kerajinan</button>
 <button onclick="showPage('ulang-tahun',this)" data-menu="admin-only">🎂 Ulang Tahun</button>
+<button onclick="showPage('pengingat-jadwal',this)" data-menu="admin-only">🔔 Pengingat WA</button>
 <button onclick="showPage('kelola-kelas',this)" data-menu="admin-only">🗂️ Kelola Kelas</button>
 <button onclick="showPage('dokumentasi',this)" data-menu="dokumentasi">📸 Dokumentasi</button>
-<button onclick="showPage('data-backup',this)" data-menu="admin-only">🛡️ Data &amp; Backup</button>
+<button onclick="showPage('data-backup',this)" data-menu="admin-only">🛡️ Backup</button>
 <button onclick="showPage('tentang',this)" data-menu="tentang">ℹ️ Tentang</button>
 </nav>
 </div>
@@ -1231,6 +1274,73 @@ ondrop="handleJadwalDrop(event)">
 <div id="emptyBdayAll" class="empty"><div class="ei">📋</div>Belum ada data anak.</div>
 </div>
 </div>
+<div class="page" id="page-pengingat-jadwal">
+<div class="section-title">🔔 Pengingat Jadwal Pelayan via WhatsApp</div>
+<div class="card" style="border-color:rgba(37,211,102,0.4);background:linear-gradient(135deg,var(--navy-mid) 0%,rgba(37,211,102,0.05) 100%);">
+<div class="card-title" style="color:#25D366;">📱 Kirim Pengingat Jadwal Pelayan via WhatsApp</div>
+<p style="font-size:0.8rem;color:var(--muted-light);margin-bottom:14px;line-height:1.7;">Sistem akan membaca gambar jadwal pelayan yang sudah di-upload, mencocokkan nama pelayan dari database, lalu memungkinkan Anda mengirim pesan pengingat via WhatsApp sesuai tanggal jadwal.</p>
+<div id="pengingatJadwalContent">
+<div id="pengingatNoJadwal" style="text-align:center;padding:32px 16px;">
+<div style="font-size:2.5rem;margin-bottom:10px;">🖼️</div>
+<div style="font-size:0.9rem;color:var(--muted-light);font-weight:600;">Belum ada gambar jadwal pelayan</div>
+<p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">Upload gambar jadwal pelayan terlebih dahulu di halaman <b style="color:var(--gold-light);">Dashboard → Jadwal Pelayan Ibadah</b></p>
+<button class="btn btn-outline btn-sm" style="margin-top:14px;" onclick="showPage('dashboard',document.querySelector('[data-menu=dashboard]'))">🏠 Ke Dashboard</button>
+</div>
+<div id="pengingatJadwalMain" style="display:none;">
+<div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;margin-bottom:16px;">
+<div style="flex:1;min-width:200px;">
+<label style="font-size:0.71rem;color:var(--gold-light);font-weight:700;letter-spacing:0.5px;text-transform:uppercase;display:block;margin-bottom:5px;">Tanggal Ibadah</label>
+<input type="date" id="pengingatTanggal" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid var(--border-subtle);border-radius:9px;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;" onchange="renderPengingatList()">
+</div>
+<div style="flex:1;min-width:160px;">
+<label style="font-size:0.71rem;color:var(--gold-light);font-weight:700;letter-spacing:0.5px;text-transform:uppercase;display:block;margin-bottom:5px;">Sesi Ibadah</label>
+<select id="pengingatSesi" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid var(--border-subtle);border-radius:9px;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;" onchange="renderPengingatList()">
+<option value="semua">Semua Sesi</option>
+<option value="pagi">🌅 Sesi Pagi</option>
+<option value="sore">🌆 Sesi Sore</option>
+</select>
+</div>
+</div>
+<!-- Jadwal Image Preview -->
+<div style="border:1px solid var(--border-subtle);border-radius:10px;overflow:hidden;margin-bottom:16px;background:rgba(0,0,0,0.2);">
+<div style="padding:8px 14px;background:rgba(245,185,66,0.07);border-bottom:1px solid var(--border-subtle);font-size:0.76rem;color:var(--gold);font-weight:700;letter-spacing:0.3px;">📅 GAMBAR JADWAL PELAYAN (Referensi)</div>
+<img id="pengingatJadwalImg" src="" alt="Jadwal Pelayan" style="max-width:100%;height:auto;display:block;cursor:zoom-in;max-height:220px;object-fit:contain;margin:0 auto;" onclick="openJadwalModal()">
+<div style="padding:6px 14px;font-size:0.69rem;color:var(--muted);text-align:center;">Klik gambar untuk perbesar • Baca nama pelayan dari jadwal lalu masukkan di bawah</div>
+</div>
+<!-- Daftar pelayan dari database -->
+<div style="margin-bottom:10px;">
+<div style="font-size:0.76rem;color:var(--gold);font-weight:700;letter-spacing:0.3px;margin-bottom:8px;text-transform:uppercase;">📋 Pilih Pelayan untuk Dikirim Pengingat</div>
+<div id="pengingatPelayanList" style="display:flex;flex-direction:column;gap:6px;max-height:360px;overflow-y:auto;"></div>
+<div id="pengingatEmptyPelayan" class="empty" style="display:none;padding:24px 0;"><div class="ei">🙏</div>Belum ada data pelayan. Tambahkan di menu Data Pelayan.</div>
+</div>
+<!-- Template pesan -->
+<div style="background:rgba(37,211,102,0.05);border:1px solid rgba(37,211,102,0.2);border-radius:10px;padding:14px;margin-bottom:14px;">
+<div style="font-size:0.76rem;color:#25D366;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.3px;">✉️ Template Pesan Pengingat</div>
+<div class="form-group" style="margin-bottom:10px;">
+<label>Pilih Template</label>
+<select id="pengingatTemplate" onchange="updatePengingatPreview()" style="background:rgba(255,255,255,0.06);border:1px solid var(--border-subtle);border-radius:9px;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;padding:8px 10px;outline:none;width:100%;">
+<option value="0">🙏 Template 1 – Formal & Hormat</option>
+<option value="1">💛 Template 2 – Hangat & Kasih</option>
+<option value="2">✝️ Template 3 – Dengan Ayat Firman</option>
+</select>
+</div>
+<div class="form-group" style="margin-bottom:8px;">
+<label>Nama Pengirim / Gereja</label>
+<input type="text" id="pengingatPengirim" placeholder="Admin SM / Ketua SM" style="background:rgba(255,255,255,0.06);border:1px solid var(--border-subtle);border-radius:9px;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;padding:8px 10px;outline:none;width:100%;" oninput="updatePengingatPreview()">
+</div>
+<div style="font-size:0.72rem;color:var(--muted);margin-bottom:6px;font-weight:600;">PREVIEW PESAN:</div>
+<div id="pengingatPreview" class="wa-msg-preview" style="font-size:0.8rem;white-space:pre-wrap;min-height:80px;"></div>
+</div>
+<!-- Kirim semua -->
+<div class="btn-row">
+<button class="btn wa-btn" onclick="kirimPengingatSemuaPelayan()">📲 Kirim ke Semua Pelayan Terpilih</button>
+<button class="btn btn-outline btn-sm" onclick="selectAllPengingatPelayan(true)">☑️ Pilih Semua</button>
+<button class="btn btn-outline btn-sm" onclick="selectAllPengingatPelayan(false)">◻️ Batal Pilih</button>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div class="page" id="page-kelola-kelas">
 <div class="section-title">🗂️ Kelola Kelas &amp; Kategori</div>
 <div class="card">
@@ -1348,105 +1458,67 @@ ondrop="handleJadwalDrop(event)">
 </div>
 </div>
 <div class="page" id="page-data-backup">
-<div class="section-title">🛡️ Data &amp; Backup</div>
-<div class="card" style="border-color:rgba(77,184,232,0.35);background:linear-gradient(135deg,var(--navy-card) 0%,rgba(77,184,232,0.04) 100%);">
-<div class="card-title" style="color:var(--blue-sky);">📊 Status Penyimpanan Data</div>
-<div id="storageHealthGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:18px;"></div>
-<div style="background:rgba(245,185,66,0.07);border:1px solid rgba(245,185,66,0.2);border-radius:10px;padding:13px 16px;font-size:0.8rem;color:var(--cream);line-height:1.8;">
-⚠️ <b style="color:var(--gold);">Info:</b> Data disinkronkan ke <b style="color:#F5A623;">Firebase Cloud</b> secara real-time dan juga disimpan lokal (localStorage). Backup tetap disarankan sebagai arsip.
+<div class="section-title">🛡️ Backup &amp; Pulihkan Data</div>
+
+<!-- Status Storage – ringkas -->
+<div class="card" style="padding:14px 18px;margin-bottom:10px;border-color:rgba(77,184,232,0.3);">
+<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+<span style="font-size:0.8rem;font-weight:700;color:var(--blue-sky);">📊 Status Penyimpanan</span>
+<span style="font-size:0.69rem;color:var(--muted);background:rgba(77,184,232,0.08);border:1px solid rgba(77,184,232,0.2);border-radius:20px;padding:2px 10px;">☁️ Firebase + Lokal</span>
 </div>
+<div id="storageHealthGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;"></div>
 </div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
-<div class="card" style="border-color:rgba(52,211,153,0.35);">
-<div class="card-title" style="color:#34D399;">💾 Backup Data</div>
-<p style="font-size:0.82rem;color:var(--cream);line-height:1.8;margin-bottom:16px;">
-Ekspor seluruh data aplikasi (anak, pelayan, absensi, pengaturan) ke dalam satu file <b style="color:var(--gold);">.json</b>. Simpan file ini di tempat aman seperti Google Drive, WhatsApp, atau email.
-</p>
-<div id="backupPreviewStats" style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.2);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:0.79rem;color:var(--cream);line-height:2;"></div>
-<button class="btn btn-gold" onclick="doBackupJSON()" style="width:100%;justify-content:center;font-size:0.9rem;padding:12px;">
-⬇️ Download Backup (.json)
-</button>
-<p style="font-size:0.72rem;color:var(--muted);margin-top:10px;text-align:center;">File akan otomatis terunduh ke perangkat Anda</p>
+
+<!-- Aksi Utama 2 kolom -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+<!-- Backup JSON -->
+<div class="card" style="padding:16px;border-color:rgba(52,211,153,0.35);">
+<div style="font-size:1.6rem;margin-bottom:6px;">💾</div>
+<div style="font-size:0.82rem;font-weight:800;color:#34D399;margin-bottom:4px;">Backup Data</div>
+<div id="backupPreviewStats" style="font-size:0.71rem;color:var(--muted);margin-bottom:10px;line-height:1.7;"></div>
+<button class="btn btn-gold btn-sm" onclick="doBackupJSON()" style="width:100%;justify-content:center;">⬇️ Download .json</button>
 </div>
-<div class="card" style="border-color:rgba(139,92,246,0.35);">
-<div class="card-title" style="color:#A78BFA;">📂 Pulihkan Data (Restore)</div>
-<p style="font-size:0.82rem;color:var(--cream);line-height:1.8;margin-bottom:16px;">
-Pulihkan data dari file backup <b style="color:var(--gold);">.json</b> yang sebelumnya diunduh. Cocok untuk migrasi perangkat atau pemulihan data setelah masalah teknis.
-</p>
-<div id="restoreDropZone" style="border:2px dashed rgba(139,92,246,0.35);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:14px;"
-ondragover="event.preventDefault();this.style.borderColor='#A78BFA';this.style.background='rgba(139,92,246,0.08)'"
-ondragleave="this.style.borderColor='rgba(139,92,246,0.35)';this.style.background='transparent'"
-ondrop="handleRestoreDrop(event)"
-onclick="document.getElementById('restoreFileInput').click()">
-<div style="font-size:2rem;margin-bottom:8px;">📁</div>
-<div style="font-size:0.84rem;color:var(--cream);font-weight:600;">Drag & Drop file backup</div>
-<div style="font-size:0.73rem;color:var(--muted);margin-top:4px;">atau klik untuk pilih file <span style="color:#A78BFA;">.json</span></div>
+<!-- Restore JSON -->
+<div class="card" style="padding:16px;border-color:rgba(139,92,246,0.35);">
+<div style="font-size:1.6rem;margin-bottom:6px;">📂</div>
+<div style="font-size:0.82rem;font-weight:800;color:#A78BFA;margin-bottom:4px;">Pulihkan Data</div>
+<div style="font-size:0.71rem;color:var(--muted);margin-bottom:10px;line-height:1.7;">Pilih file backup <span style="color:#A78BFA;">.json</span> untuk restore</div>
+<div id="restoreDropZone" style="border:2px dashed rgba(139,92,246,0.35);border-radius:9px;padding:12px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:8px;font-size:0.78rem;color:var(--muted-light);"
+  ondragover="event.preventDefault();this.style.borderColor='#A78BFA';this.style.background='rgba(139,92,246,0.08)'"
+  ondragleave="this.style.borderColor='rgba(139,92,246,0.35)';this.style.background='transparent'"
+  ondrop="handleRestoreDrop(event)"
+  onclick="document.getElementById('restoreFileInput').click()">
+  📁 Drag &amp; drop atau klik pilih file
 </div>
 <input type="file" id="restoreFileInput" accept=".json" style="display:none;" onchange="handleRestoreFile(event)">
-<div id="restorePreview" style="display:none;background:rgba(139,92,246,0.07);border:1px solid rgba(139,92,246,0.25);border-radius:10px;padding:13px 16px;margin-bottom:14px;font-size:0.79rem;color:var(--cream);line-height:1.9;"></div>
-<button id="btnKonfirmasiRestore" class="btn btn-outline" onclick="konfirmasiRestore()" style="width:100%;justify-content:center;border-color:#A78BFA;color:#A78BFA;display:none;">
-✅ Konfirmasi &amp; Pulihkan Sekarang
-</button>
-<div id="restoreStatusMsg" style="display:none;border-radius:9px;padding:11px 14px;font-size:0.81rem;font-weight:600;margin-top:10px;"></div>
+<div id="restorePreview" style="display:none;background:rgba(139,92,246,0.07);border:1px solid rgba(139,92,246,0.25);border-radius:8px;padding:10px;margin-bottom:8px;font-size:0.75rem;color:var(--cream);line-height:1.8;"></div>
+<button id="btnKonfirmasiRestore" class="btn btn-sm" onclick="konfirmasiRestore()" style="width:100%;justify-content:center;border:1.5px solid #A78BFA;color:#A78BFA;background:transparent;display:none;">✅ Konfirmasi Restore</button>
+<div id="restoreStatusMsg" style="display:none;border-radius:8px;padding:9px 12px;font-size:0.78rem;font-weight:600;margin-top:8px;"></div>
 </div>
 </div>
-<div class="card" style="border-color:rgba(245,185,66,0.3);margin-top:0;">
-<div class="card-title">📋 Ekspor Data ke Excel/CSV</div>
-<p style="font-size:0.82rem;color:var(--cream);line-height:1.8;margin-bottom:16px;">
-Ekspor data spesifik ke format <b style="color:var(--gold);">.csv</b> yang bisa dibuka langsung di Microsoft Excel, Google Sheets, atau LibreOffice.
-</p>
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
-<div style="background:rgba(167,89,255,0.08);border:1px solid rgba(167,89,255,0.25);border-radius:12px;padding:18px;text-align:center;">
-<div style="font-size:2rem;margin-bottom:8px;">👶</div>
-<div style="font-size:0.84rem;font-weight:700;color:#C084FC;margin-bottom:6px;">Data Anak</div>
-<div id="csvAnakCount" style="font-size:0.72rem;color:var(--muted);margin-bottom:12px;"></div>
-<button class="btn btn-sm" onclick="eksporCSVAnak()" style="background:rgba(167,89,255,0.2);border:1px solid rgba(167,89,255,0.4);color:#C084FC;width:100%;justify-content:center;">📥 Ekspor CSV</button>
-</div>
-<div style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.25);border-radius:12px;padding:18px;text-align:center;">
-<div style="font-size:2rem;margin-bottom:8px;">🙏</div>
-<div style="font-size:0.84rem;font-weight:700;color:#38BDF8;margin-bottom:6px;">Data Pelayan</div>
-<div id="csvPelayanCount" style="font-size:0.72rem;color:var(--muted);margin-bottom:12px;"></div>
-<button class="btn btn-sm" onclick="eksporCSVPelayan()" style="background:rgba(56,189,248,0.2);border:1px solid rgba(56,189,248,0.4);color:#38BDF8;width:100%;justify-content:center;">📥 Ekspor CSV</button>
-</div>
-<div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:12px;padding:18px;text-align:center;">
-<div style="font-size:2rem;margin-bottom:8px;">📋</div>
-<div style="font-size:0.84rem;font-weight:700;color:#34D399;margin-bottom:6px;">Data Absensi</div>
-<div id="csvAbsensiCount" style="font-size:0.72rem;color:var(--muted);margin-bottom:12px;"></div>
-<button class="btn btn-sm" onclick="eksporCSVAbsensi()" style="background:rgba(52,211,153,0.2);border:1px solid rgba(52,211,153,0.4);color:#34D399;width:100%;justify-content:center;">📥 Ekspor CSV</button>
-</div>
-<div style="background:rgba(245,185,66,0.08);border:1px solid rgba(245,185,66,0.2);border-radius:12px;padding:18px;text-align:center;">
-<div style="font-size:2rem;margin-bottom:8px;">📦</div>
-<div style="font-size:0.84rem;font-weight:700;color:var(--gold-light);margin-bottom:6px;">Semua Data (Full Backup)</div>
-<div style="font-size:0.72rem;color:var(--muted);margin-bottom:12px;">JSON lengkap semua modul</div>
-<button class="btn btn-sm btn-gold" onclick="doBackupJSON()" style="width:100%;justify-content:center;">⬇️ Backup JSON</button>
+
+<!-- Ekspor CSV ringkas -->
+<div class="card" style="padding:14px 18px;margin-bottom:10px;border-color:rgba(245,185,66,0.25);">
+<div style="font-size:0.8rem;font-weight:700;color:var(--gold);margin-bottom:10px;">📋 Ekspor ke CSV / Excel</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<button class="btn btn-sm" onclick="eksporCSVAnak()" style="background:rgba(167,89,255,0.15);border:1px solid rgba(167,89,255,0.35);color:#C084FC;">👶 Data Anak</button>
+<button class="btn btn-sm" onclick="eksporCSVPelayan()" style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.35);color:#38BDF8;">🙏 Pelayan</button>
+<button class="btn btn-sm" onclick="eksporCSVAbsensi()" style="background:rgba(52,211,153,0.15);border:1px solid rgba(52,211,153,0.35);color:#34D399;">📋 Absensi</button>
+<button class="btn btn-sm btn-gold" onclick="doBackupJSON()">📦 Full Backup</button>
 </div>
 </div>
+
+<!-- Tips ringkas -->
+<div class="card" style="padding:12px 18px;border-color:rgba(52,211,153,0.2);">
+<div style="font-size:0.78rem;font-weight:700;color:#34D399;margin-bottom:8px;">💡 Tips Backup Rutin</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;">
+<div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:9px 12px;flex:1;min-width:140px;font-size:0.73rem;color:var(--muted);line-height:1.6;">🗓️ <b style="color:var(--cream);">Mingguan</b> — setelah ibadah, simpan ke Google Drive</div>
+<div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:9px 12px;flex:1;min-width:140px;font-size:0.73rem;color:var(--muted);line-height:1.6;">📱 <b style="color:var(--cream);">WhatsApp</b> — kirim ke grup admin sebagai arsip</div>
+<div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:9px 12px;flex:1;min-width:140px;font-size:0.73rem;color:var(--muted);line-height:1.6;">🔄 <b style="color:var(--cream);">Ganti perangkat</b> — backup dulu, restore di HP baru</div>
 </div>
-<div class="card" style="background:linear-gradient(135deg,rgba(7,20,40,0.9) 0%,rgba(52,211,153,0.06) 100%);border-color:rgba(52,211,153,0.2);">
-<div class="card-title" style="color:#34D399;">📅 Panduan Backup Rutin</div>
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
-<div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:14px;">
-<div style="font-size:1.4rem;margin-bottom:6px;">🗓️</div>
-<div style="font-size:0.83rem;font-weight:700;color:var(--cream);margin-bottom:4px;">Backup Mingguan</div>
-<div style="font-size:0.76rem;color:var(--muted);line-height:1.7;">Lakukan setiap Minggu setelah ibadah. Simpan ke folder Google Drive khusus.</div>
+<div style="margin-top:8px;font-size:0.69rem;color:rgba(255,255,255,0.2);">💡 Backup rutin sangat dianjurkan untuk keamanan data Anda</div>
 </div>
-<div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:14px;">
-<div style="font-size:1.4rem;margin-bottom:6px;">📱</div>
-<div style="font-size:0.83rem;font-weight:700;color:var(--cream);margin-bottom:4px;">Simpan di WhatsApp</div>
-<div style="font-size:0.76rem;color:var(--muted);line-height:1.7;">Kirim file .json ke grup admin gereja sebagai arsip cadangan tambahan.</div>
-</div>
-<div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:14px;">
-<div style="font-size:1.4rem;margin-bottom:6px;">🔄</div>
-<div style="font-size:0.83rem;font-weight:700;color:var(--cream);margin-bottom:4px;">Sebelum Ganti Perangkat</div>
-<div style="font-size:0.76rem;color:var(--muted);line-height:1.7;">Selalu backup dulu sebelum ganti HP, laptop, atau browser. Restore di perangkat baru.</div>
-</div>
-<div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:14px;">
-<div style="font-size:1.4rem;margin-bottom:6px;">📂</div>
-<div style="font-size:0.83rem;font-weight:700;color:var(--cream);margin-bottom:4px;">Beri Nama Jelas</div>
-<div style="font-size:0.76rem;color:var(--muted);line-height:1.7;">Contoh: <span style="color:var(--gold);font-family:monospace;">smm_backup_2025-06-01.json</span> agar mudah ditemukan.</div>
-</div>
-</div>
-</div>
+
 </div>
 <div class="page" id="page-tentang">
 <div class="section-title">ℹ️ Tentang SM Manager</div>
@@ -3530,6 +3602,11 @@ refreshGmailUI(gmailData);
 const el = document.getElementById(id);
 if (el) el.value = '';
 });
+// Load admin email
+const adminEmailEl = document.getElementById('cfgAdminEmail');
+if (adminEmailEl) adminEmailEl.value = localStorage.getItem('smm_admin_email') || '';
+// Init theme mode toggle UI
+updateThemeModeToggleUI();
 ['msgGantiUser','msgGantiPass'].forEach(id => {
 const el = document.getElementById(id);
 if (el) el.style.display = 'none';
@@ -5016,5 +5093,348 @@ ticking = false;
 </script>
 <button class="settings-gear-btn" id="settingsGearBtn" onclick="openSettings()" title="Pengaturan Tampilan" style="display:none;">⚙️</button>
 </div>
-</body>
-</html>
+<script>
+/* =========================================================
+   FITUR BARU v19: Dark/Light Mode, Lupa Password, Pengingat Jadwal WA
+   ========================================================= */
+
+// ──────────────────────────────────
+// 1. DARK / LIGHT MODE
+// ──────────────────────────────────
+const LIGHT_VARS = {
+  '--navy':'#F0F4FC','--navy-mid':'#E4EBF8','--navy-light':'#D8E5F5','--navy-card':'#FFFFFF',
+  '--white':'#1A2236','--cream':'#2A3754','--text':'#2A3754','--muted':'#6B7280',
+  '--muted-light':'#555F72','--border':'rgba(45,100,200,0.22)','--border-subtle':'rgba(0,0,0,0.1)',
+  '--shadow':'0 8px 40px rgba(0,0,0,0.12)','--shadow-sm':'0 2px 12px rgba(0,0,0,0.08)'
+};
+const DARK_VARS = {
+  '--navy':'#071428','--navy-mid':'#0d1e3a','--navy-light':'#122850','--navy-card':'#0f1e3c',
+  '--white':'#F0F6FF','--cream':'#D8E8F8','--text':'#D8E8F8','--muted':'#6B7280',
+  '--muted-light':'#9CA3AF','--border':'rgba(77,184,232,0.22)','--border-subtle':'rgba(255,255,255,0.08)',
+  '--shadow':'0 8px 40px rgba(0,0,0,0.5)','--shadow-sm':'0 2px 12px rgba(0,0,0,0.3)'
+};
+let _isLightMode = false;
+function initThemeMode() {
+  const saved = localStorage.getItem('smm_theme_mode');
+  _isLightMode = saved === 'light';
+  applyThemeMode(_isLightMode);
+}
+function applyThemeMode(light) {
+  const vars = light ? LIGHT_VARS : DARK_VARS;
+  Object.entries(vars).forEach(([k,v]) => document.documentElement.style.setProperty(k, v));
+  // Fix login bg for light mode
+  const loginBg = document.querySelector('.login-bg-scene');
+  if (loginBg) loginBg.style.background = light ? '#E8EFF8' : '#050C18';
+  // Fix wa-msg-preview bg
+  document.querySelectorAll('.wa-msg-preview').forEach(el => {
+    el.style.background = light ? '#e6f9ee' : '#0b1e12';
+    el.style.color = light ? '#1a5c35' : '#a8e6c4';
+  });
+  updateThemeModeToggleUI();
+}
+function toggleThemeMode() {
+  _isLightMode = !_isLightMode;
+  localStorage.setItem('smm_theme_mode', _isLightMode ? 'light' : 'dark');
+  applyThemeMode(_isLightMode);
+}
+function updateThemeModeToggleUI() {
+  const btn   = document.getElementById('themeModeToggleBtn');
+  const thumb = document.getElementById('themeModeThumb');
+  const lbl   = document.getElementById('themeModeLabel');
+  if (!btn) return;
+  if (_isLightMode) {
+    btn.style.background = 'rgba(255,213,79,0.5)';
+    thumb.style.transform = 'translateX(24px)';
+    thumb.textContent = '☀️';
+    if (lbl) lbl.textContent = 'Mode Terang';
+  } else {
+    btn.style.background = 'rgba(201,168,76,0.3)';
+    thumb.style.transform = 'translateX(0)';
+    thumb.textContent = '🌙';
+    if (lbl) lbl.textContent = 'Mode Gelap';
+  }
+}
+// Init on load
+(function(){ try { initThemeMode(); } catch(e){} })();
+
+// ──────────────────────────────────
+// 2. LUPA PASSWORD (RESET VIA EMAIL)
+// ──────────────────────────────────
+function openForgotPassword() {
+  const modal = document.getElementById('modalForgotPassword');
+  if (modal) { modal.style.display = 'flex'; document.getElementById('forgotEmailInput').focus(); }
+}
+function closeForgotPassword() {
+  const modal = document.getElementById('modalForgotPassword');
+  if (modal) modal.style.display = 'none';
+  const msg = document.getElementById('forgotMsg');
+  if (msg) msg.style.display = 'none';
+  const inp = document.getElementById('forgotEmailInput');
+  if (inp) inp.value = '';
+}
+function kirimResetPassword() {
+  const emailInput = document.getElementById('forgotEmailInput');
+  const msgEl = document.getElementById('forgotMsg');
+  const email = emailInput ? emailInput.value.trim() : '';
+  // Validate email format
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showForgotMsg('⚠️ Masukkan alamat email yang valid.', false); return;
+  }
+  // Check against saved admin email
+  const savedEmail = localStorage.getItem('smm_admin_email') || '';
+  if (savedEmail && email.toLowerCase() !== savedEmail.toLowerCase()) {
+    showForgotMsg('❌ Email tidak cocok dengan email admin yang terdaftar.', false); return;
+  }
+  // Get current admin credentials info for the email body
+  const cfg = (function(){ try { return JSON.parse(localStorage.getItem('smm_config')) || {}; } catch { return {}; } })();
+  const smName = cfg.namaSM || 'SM Manager';
+  const subject = encodeURIComponent(`[${smName}] Reset Password Admin`);
+  const now = new Date().toLocaleString('id-ID', { dateStyle:'long', timeStyle:'short' });
+  const body = encodeURIComponent(
+`Permintaan Reset Password Admin – ${smName}
+
+Tanggal: ${now}
+Perangkat: ${navigator.userAgent.substring(0,80)}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Langkah Reset Password:
+1. Buka aplikasi SMManager di browser
+2. Login sebagai Admin
+3. Buka ⚙️ Pengaturan → Akun Admin
+4. Pilih "Ganti Password Admin"
+5. Masukkan password lama (hubungi developer jika lupa)
+   Default password awal: admin123
+
+Jika lupa password sepenuhnya, hubungi developer:
+📧 prdct.digital99@gmail.com
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Pesan ini dikirim otomatis dari aplikasi ${smName}.`
+  );
+  // Open mailto
+  const mailtoLink = `mailto:${email}?subject=${subject}&body=${body}`;
+  window.open(mailtoLink, '_blank');
+  showForgotMsg('✅ Aplikasi email dibuka. Kirim email tersebut ke diri Anda sendiri sebagai panduan reset.', true);
+  setTimeout(closeForgotPassword, 4000);
+}
+function showForgotMsg(text, ok) {
+  const msg = document.getElementById('forgotMsg');
+  if (!msg) return;
+  msg.style.display = 'block';
+  msg.style.background = ok ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)';
+  msg.style.color = ok ? '#34D399' : '#F87171';
+  msg.style.border = `1px solid ${ok ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.3)'}`;
+  msg.textContent = text;
+}
+function simpanEmailAdmin() {
+  const el  = document.getElementById('cfgAdminEmail');
+  const msg = document.getElementById('msgEmailAdmin');
+  if (!el || !msg) return;
+  const email = el.value.trim();
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    msg.style.display = 'block'; msg.style.background = 'rgba(239,68,68,0.15)';
+    msg.style.color = '#F87171'; msg.textContent = '⚠️ Format email tidak valid.'; return;
+  }
+  localStorage.setItem('smm_admin_email', email);
+  msg.style.display = 'block'; msg.style.background = 'rgba(16,185,129,0.15)';
+  msg.style.color = '#34D399'; msg.textContent = '✅ Email admin berhasil disimpan!';
+  setTimeout(() => { msg.style.display = 'none'; }, 3000);
+}
+
+// ──────────────────────────────────
+// 3. PENGINGAT JADWAL PELAYAN VIA WA
+// ──────────────────────────────────
+const PENGINGAT_TEMPLATES = [
+  (nama, tanggal, sesi, pengirim) =>
+`Shalom Kak *${nama}* 🙏
+
+Kami mengingatkan bahwa Kakak terdaftar dalam *Jadwal Pelayan Ibadah*:
+
+📅 Tanggal  : *${tanggal}*
+🕐 Sesi      : *${sesi}*
+
+Mohon hadir tepat waktu dan mempersiapkan diri dengan baik.
+
+Terima kasih atas pelayanan Kakak 🙌
+
+*${pengirim}*`,
+
+  (nama, tanggal, sesi, pengirim) =>
+`Halo Kak *${nama}* 💛
+
+Dengan penuh kasih, kami mengingatkan jadwal pelayanan Kakak:
+
+📅 *${tanggal}*
+🕐 *${sesi}*
+
+"Layanilah seorang akan yang lain, sesuai dengan karunia yang telah diperoleh tiap-tiap orang." – 1 Petrus 4:10
+
+Tuhan memberkati pelayanan Kakak! 😊
+
+Salam kasih,
+*${pengirim}*`,
+
+  (nama, tanggal, sesi, pengirim) =>
+`✝️ Shalom Kak *${nama}*,
+
+Pengingat jadwal pelayanan Sekolah Minggu:
+
+🗓️ Tanggal : *${tanggal}*
+⏰ Sesi     : *${sesi}*
+
+_"Hendaklah kamu saling melayani dengan kasih."_ – Galatia 5:13
+
+Kiranya Tuhan memampukan dan memberkati Kakak dalam pelayanan 🙌
+
+*${pengirim}*`
+];
+
+function initPengingatJadwal() {
+  // Set default date to next Sunday
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+  const daysUntilSunday = dayOfWeek === 0 ? 7 : 7 - dayOfWeek;
+  const nextSunday = new Date(today);
+  nextSunday.setDate(today.getDate() + daysUntilSunday);
+  const dateInput = document.getElementById('pengingatTanggal');
+  if (dateInput && !dateInput.value) {
+    dateInput.value = nextSunday.toISOString().split('T')[0];
+  }
+  const pengirimInput = document.getElementById('pengingatPengirim');
+  if (pengirimInput && !pengirimInput.value) {
+    try {
+      const cfg = JSON.parse(localStorage.getItem('smm_config')) || {};
+      pengirimInput.value = cfg.namaSM || 'Admin SM';
+    } catch { pengirimInput.value = 'Admin SM'; }
+  }
+  // Check if jadwal image exists
+  const jadwalImg = localStorage.getItem('hosana_jadwal_img');
+  const noJadwal  = document.getElementById('pengingatNoJadwal');
+  const mainArea  = document.getElementById('pengingatJadwalMain');
+  if (jadwalImg) {
+    if (noJadwal) noJadwal.style.display = 'none';
+    if (mainArea) mainArea.style.display = 'block';
+    const previewImg = document.getElementById('pengingatJadwalImg');
+    if (previewImg) previewImg.src = jadwalImg;
+    renderPengingatList();
+    updatePengingatPreview();
+  } else {
+    if (noJadwal) noJadwal.style.display = 'block';
+    if (mainArea) mainArea.style.display = 'none';
+  }
+}
+function renderPengingatList() {
+  const container = document.getElementById('pengingatPelayanList');
+  const emptyEl   = document.getElementById('pengingatEmptyPelayan');
+  if (!container) return;
+  const KEY_PELAYAN = 'hosana_pelayan';
+  let pelayan = [];
+  try { pelayan = JSON.parse(localStorage.getItem(KEY_PELAYAN)) || []; } catch {}
+  if (!pelayan.length) {
+    container.innerHTML = '';
+    if (emptyEl) emptyEl.style.display = 'block';
+    return;
+  }
+  if (emptyEl) emptyEl.style.display = 'none';
+  const tanggal = document.getElementById('pengingatTanggal')?.value || '';
+  const sesiVal = document.getElementById('pengingatSesi')?.value || 'semua';
+  const ibadahCfg = (function(){ try { return JSON.parse(localStorage.getItem('hosana_ibadah_settings')) || {}; } catch { return {}; } })();
+  const jamPagi = ibadahCfg.jamPagi || '08.15';
+  const jamSore = ibadahCfg.jamSore || '17.15';
+  const sesiLabel = sesiVal === 'pagi' ? `Sesi Pagi – ${jamPagi} WIB` :
+                    sesiVal === 'sore' ? `Sesi Sore – ${jamSore} WIB` :
+                    `Pagi (${jamPagi}) & Sore (${jamSore}) WIB`;
+  container.innerHTML = pelayan.map((p, i) => {
+    if (!p || !p.nama) return '';
+    const hasWa = p.no_wa && p.no_wa.trim();
+    return `<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(255,255,255,0.03);border:1px solid var(--border-subtle);border-radius:10px;flex-wrap:wrap;">
+      <input type="checkbox" id="pengingatCb_${i}" class="pengingat-cb" data-idx="${i}" style="width:16px;height:16px;accent-color:#25D366;cursor:pointer;flex-shrink:0;">
+      <div style="flex:1;min-width:120px;">
+        <div style="font-size:0.86rem;font-weight:700;color:var(--cream);">${p.nama}</div>
+        <div style="font-size:0.72rem;color:var(--muted);">${p.peran || p.status || 'Pelayan'} ${hasWa ? '• 📱 '+p.no_wa : '<span style="color:#F87171;">• Belum ada no. WA</span>'}</div>
+      </div>
+      ${hasWa ? `<button onclick="kirimPengingatSatuPelayan(${i},'${tanggal}','${sesiLabel}')" class="wa-btn" style="padding:5px 12px;font-size:0.75rem;">📲 Kirim WA</button>` : '<span style="font-size:0.72rem;color:rgba(248,113,113,0.7);font-style:italic;">No WA kosong</span>'}
+    </div>`;
+  }).join('');
+  updatePengingatPreview();
+}
+function updatePengingatPreview() {
+  const preview   = document.getElementById('pengingatPreview');
+  if (!preview) return;
+  const tplIdx    = parseInt(document.getElementById('pengingatTemplate')?.value || '0');
+  const pengirim  = document.getElementById('pengingatPengirim')?.value || 'Admin SM';
+  const tanggalRaw= document.getElementById('pengingatTanggal')?.value || '';
+  const sesiVal   = document.getElementById('pengingatSesi')?.value || 'semua';
+  const ibadahCfg = (function(){ try { return JSON.parse(localStorage.getItem('hosana_ibadah_settings')) || {}; } catch { return {}; } })();
+  const jamPagi = ibadahCfg.jamPagi || '08.15';
+  const jamSore = ibadahCfg.jamSore || '17.15';
+  const tanggal = tanggalRaw ? new Date(tanggalRaw+'T00:00:00').toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}) : '[Tanggal]';
+  const sesiLabel = sesiVal === 'pagi' ? `Sesi Pagi – ${jamPagi} WIB` :
+                    sesiVal === 'sore' ? `Sesi Sore – ${jamSore} WIB` :
+                    `Pagi (${jamPagi}) & Sore (${jamSore}) WIB`;
+  preview.textContent = PENGINGAT_TEMPLATES[tplIdx] ? PENGINGAT_TEMPLATES[tplIdx]('[Nama Pelayan]', tanggal, sesiLabel, pengirim) : '';
+}
+function kirimPengingatSatuPelayan(idx, tanggalRaw, sesiLabel) {
+  const KEY_PELAYAN = 'hosana_pelayan';
+  let pelayan = [];
+  try { pelayan = JSON.parse(localStorage.getItem(KEY_PELAYAN)) || []; } catch {}
+  const p = pelayan[idx];
+  if (!p || !p.no_wa) { alert('No. WhatsApp pelayan tidak tersedia!'); return; }
+  const tplIdx   = parseInt(document.getElementById('pengingatTemplate')?.value || '0');
+  const pengirim = document.getElementById('pengingatPengirim')?.value || 'Admin SM';
+  const tanggal  = tanggalRaw ? new Date(tanggalRaw+'T00:00:00').toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}) : '-';
+  const msg = PENGINGAT_TEMPLATES[tplIdx](p.nama, tanggal, sesiLabel, pengirim);
+  const noWA = p.no_wa.replace(/\D/g,'').replace(/^0/,'62');
+  window.open(`https://wa.me/${noWA}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+function kirimPengingatSemuaPelayan() {
+  const KEY_PELAYAN = 'hosana_pelayan';
+  let pelayan = [];
+  try { pelayan = JSON.parse(localStorage.getItem(KEY_PELAYAN)) || []; } catch {}
+  const tanggalRaw = document.getElementById('pengingatTanggal')?.value || '';
+  const sesiVal    = document.getElementById('pengingatSesi')?.value || 'semua';
+  const ibadahCfg  = (function(){ try { return JSON.parse(localStorage.getItem('hosana_ibadah_settings')) || {}; } catch { return {}; } })();
+  const jamPagi    = ibadahCfg.jamPagi || '08.15';
+  const jamSore    = ibadahCfg.jamSore || '17.15';
+  const sesiLabel  = sesiVal === 'pagi' ? `Sesi Pagi – ${jamPagi} WIB` :
+                     sesiVal === 'sore' ? `Sesi Sore – ${jamSore} WIB` :
+                     `Pagi (${jamPagi}) & Sore (${jamSore}) WIB`;
+  const tplIdx     = parseInt(document.getElementById('pengingatTemplate')?.value || '0');
+  const pengirim   = document.getElementById('pengingatPengirim')?.value || 'Admin SM';
+  const tanggal    = tanggalRaw ? new Date(tanggalRaw+'T00:00:00').toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}) : '-';
+  const checked = Array.from(document.querySelectorAll('.pengingat-cb:checked'));
+  if (!checked.length) { alert('Pilih minimal satu pelayan!'); return; }
+  const withWa = checked.filter(cb => {
+    const p = pelayan[parseInt(cb.dataset.idx)];
+    return p && p.no_wa && p.no_wa.trim();
+  });
+  if (!withWa.length) { alert('Tidak ada pelayan terpilih yang memiliki nomor WhatsApp!'); return; }
+  if (!confirm(`Kirim pengingat ke ${withWa.length} pelayan via WhatsApp?\nSetiap tab WhatsApp akan dibuka satu per satu.`)) return;
+  withWa.forEach((cb, i) => {
+    setTimeout(() => {
+      const p = pelayan[parseInt(cb.dataset.idx)];
+      const msg = PENGINGAT_TEMPLATES[tplIdx](p.nama, tanggal, sesiLabel, pengirim);
+      const noWA = p.no_wa.replace(/\D/g,'').replace(/^0/,'62');
+      window.open(`https://wa.me/${noWA}?text=${encodeURIComponent(msg)}`, '_blank');
+    }, i * 1200);
+  });
+  if (typeof toast === 'function') toast(`📲 Membuka WhatsApp untuk ${withWa.length} pelayan...`);
+}
+function selectAllPengingatPelayan(val) {
+  document.querySelectorAll('.pengingat-cb').forEach(cb => cb.checked = val);
+}
+
+// Patch showPage to init pengingat on tab open
+const _origShowPage = typeof showPage === 'function' ? showPage : null;
+if (_origShowPage) {
+  window.showPage = function(pg, btn) {
+    _origShowPage(pg, btn);
+    if (pg === 'pengingat-jadwal') {
+      setTimeout(initPengingatJadwal, 50);
+    }
+  };
+}
+// Also patch jadwal image update so pengingat page reflects new upload
+const _origInitJadwalUI = typeof initJadwalUI === 'function' ? initJadwalUI : null;
+// (passive – pengingat re-reads localStorage on open)
+</script>
